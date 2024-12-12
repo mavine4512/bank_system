@@ -75,7 +75,7 @@ This project is a Banking System built using a combination of Node.js for the ba
 ## 1. Clone the repository:
 
 ``` bash 
-git clone https://github.com/your-repo/banking-system.git
+git clone https://github.com/mavine4512/bank_system.git
 cd banking-system/backend
 ```
 ## 2. Install dependencies:
