@@ -19,12 +19,20 @@ const CustomerList = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetchCustomers();
+    const delayDebounceFn = setTimeout(() => {
+      fetchCustomers();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [page, search]);
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/pagination?page=${page}&search=${search}`, {
+      const response = await axios.get(`http://localhost:3000/api/pagination`, {
+        params: {
+          page,
+          search: search.trim() || undefined
+        },
         headers: {  
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}` 
@@ -120,7 +128,10 @@ const CustomerList = () => {
                 className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                 placeholder="Search"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1); // Reset to first page when search changes
+                }}
               />
             </div>
           </div>
@@ -196,12 +207,12 @@ const CustomerList = () => {
                           Request OTP
                         </Button>
                         {/* <Button
-                                            variant="ghost" 
-                                            size="sm"
-                                            onClick={() => handleDeactivate(customer.customer_id)}
-                                          >
-                                            Deactivate
-                                          </Button> */}
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => handleDeactivate(customer.customer_id)}
+                              >
+                                Deactivate
+                              </Button> */}
                       </div>
                     </td>
                     
@@ -248,3 +259,4 @@ const CustomerList = () => {
 };
 
 export default CustomerList;
+
