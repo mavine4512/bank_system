@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 12, 2024 at 12:28 PM
+-- Generation Time: Dec 15, 2024 at 09:56 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.33
 
@@ -30,13 +30,11 @@ SET time_zone = "+00:00";
 CREATE TABLE `audit_logs` (
   `log_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `action` enum('Login','Transaction','Investment','Loan Payment','Bill Payment','OTP Requested','Password Reset') DEFAULT NULL,
+  `action` enum('Login','Transaction','Investment','Loan Payment','Bill Payment','OTP Requested','Password Reset','Success','OTP Validation') DEFAULT NULL,
   `action_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `action_status` enum('Success','Failed') DEFAULT NULL,
   `details` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `bank_accounts`
@@ -51,8 +49,6 @@ CREATE TABLE `bank_accounts` (
   `status` enum('Active','Inactive') DEFAULT 'Active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `bills`
@@ -73,7 +69,7 @@ CREATE TABLE `bills` (
 -- Table structure for table `customers`
 --
 
-CREATE TABLE `customers` (
+ CREATE TABLE `customers` (
   `customer_id` int(11) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `other_names` varchar(255) DEFAULT NULL,
@@ -85,16 +81,12 @@ CREATE TABLE `customers` (
   `residential_address` text DEFAULT NULL,
   `occupation` varchar(100) DEFAULT NULL,
   `status` enum('Active','Inactive') DEFAULT 'Active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`customer_id`, `first_name`, `other_names`, `national_id`, `date_of_birth`, `gender`, `contact_number`, `email`, `residential_address`, `occupation`, `status`, `created_at`) VALUES
-(1, 'Lucy', 'Mbuluma', '22884512', '1999-02-12', 'Female', '0701010101', 'lucymbuluma@gmail.com', 'Thika town', 'farmer', 'Active', '2024-12-11 13:35:40'),
-(2, 'Emmah', 'Odongo', '32884517', '2004-01-06', 'Female', '0706467785', 'emmaeodongo@gmail.com', '85432', 'Doctor', 'Active', '2024-12-11 22:06:38');
 
 -- --------------------------------------------------------
 
@@ -114,6 +106,7 @@ CREATE TABLE `customer_credentials` (
 
 -- --------------------------------------------------------
 
+
 --
 -- Table structure for table `dependants`
 --
@@ -126,15 +119,6 @@ CREATE TABLE `dependants` (
   `date_of_birth` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `dependants`
---
-
-INSERT INTO `dependants` (`dependant_id`, `customer_id`, `full_name`, `relationship`, `date_of_birth`) VALUES
-(1, 1, 'Faith Akinyi', 'Spouse', '2024-06-11'),
-(2, 1, 'Baraza Davin', 'Spouse', '2024-12-10'),
-(7, 1, 'Caroline Kamau', 'Child', '2020-02-18'),
-(8, 2, 'Caroline Kamau', 'Spouse', '1995-06-06');
 
 -- --------------------------------------------------------
 
@@ -183,13 +167,6 @@ CREATE TABLE `otp_validation` (
   `validated` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `otp_validation`
---
-
-INSERT INTO `otp_validation` (`otp_id`, `customer_id`, `otp`, `otp_expiry`, `validated`) VALUES
-(1, 1, '468511', '2024-12-11 22:03:59', 0),
-(2, 1, '447714', '2024-12-12 11:07:36', 0);
 
 -- --------------------------------------------------------
 
@@ -240,7 +217,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`) VALUES
-(7, 'admin', 'admin@gmail.com', '$2b$10$3j8xZc97JwayZDF56EBt..wAiZ2c7SrzQnb9Jxz4.vJBmjbgyLvki');
+(7, 'admin', 'admin@gmail.com', '$2b$10$3j8xZc97JwayZDF56EBt..wAiZ2c7SrzQnb9Jxz4.vJBmjbgyLvki'),
+(8, 'Ken', 'kenotieno@gmail.com', '$2b$10$99XP1LYx7NU5NpOts5xkQurb.4GH3YI9l9FQiTMtoW.fwSCGu/wE6'),
+(9, 'Oyugi', 'oyugi@gmail.com', '$2b$10$dxL7jwoSJzi4y033i3aRkeyFJBmsM3536w.nfXssC86ncf8vNJvum');
 
 --
 -- Indexes for dumped tables
@@ -339,13 +318,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `bank_accounts`
 --
 ALTER TABLE `bank_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `bills`
@@ -387,7 +366,7 @@ ALTER TABLE `loans`
 -- AUTO_INCREMENT for table `otp_validation`
 --
 ALTER TABLE `otp_validation`
-  MODIFY `otp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `otp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -405,7 +384,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
