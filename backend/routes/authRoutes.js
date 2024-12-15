@@ -483,63 +483,90 @@ router.post('/customer/register', async (req, res) => {
     }
 });
 
-
-// Customer login
 router.post("/customer/login", async (req, res) => {
-  const { national_id, password } = req.body;
-
   try {
-    // Check if the user exists
+
+    const { contact_number} = req.body;
+
+    if (!contact_number) {
+      console.error("contact_number is undefined or missing");
+      return res.status(400).json({ message: "Contact number is required" });
+    }
+
+    const db = await connectToDatabase();
+
+    // Check if the user exists in the database
     const [rows] = await db.query(
       `
-      SELECT id, password FROM customersWHERE national_id = ?
+      SELECT * FROM customers WHERE contact_number = ?
       `,
-      [national_id]
+      [contact_number]
     );
 
     if (rows.length === 0) {
-      throw new Error("User not found");
+      console.error("No user found with the provided contact_number:", contact_number);
+      return res.status(404).json({ message: "User not found" });
     }
 
     const user = rows[0];
+    console.log("User found:", user);
 
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
-    }
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
+    const validated = false;
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: "6h" });
+    console.log("Generated OTP:", otp);
+
+    // Insert or update OTP in the database
+    const otpQuery = `
+      INSERT INTO otp_validation (customer_id, otp, otp_expiry, validated)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE otp = VALUES(otp), otp_expiry = VALUES(otp_expiry), validated = VALUES(validated)
+    `;
+    await db.execute(otpQuery, [user.customer_id, otp, otpExpiry, validated]);
+    console.log("OTP stored/updated in database");
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user.customer_id }, process.env.JWT_KEY, { expiresIn: "6h" });
+    console.log("Generated JWT token:", token);
+
     // Log successful login
     await logAudit(user.id, "Login", "Success", "Customer logged in successfully");
 
-    // res.status(200).json({ message: "Login successful" });
-    // Respond with the token
-    return res.status(200).json({ message: "Login successful", token: token });
-    // res.status(201).json({
-    //         message: 'User login successfully',
-    //         customer: {
-    //             customerId,
-    //             first_name,
-    //             other_names,
-    //             email,
-    //             contact_number,
-    //             national_id
-    //         },
-    //         bank_account: {
-    //             accountId: accountResult.insertId,
-    //             accountNumber,
-    //             accountType: account_type || 'Savings',
-    //             balance: 0.00,
-    //             status: 'Active'
-    //         }
-    //     });
+    // Send response with customer data, OTP, and token
+    return res.status(200).json({
+      message: "Login successful",
+      token: token,
+      otp: otp,
+      customer: {
+        id: user.customer_id,
+        first_name: user.first_name,
+        other_names: user.other_names,
+        email: user.email,
+        contact_number: user.contact_number,
+        national_id: user.national_id,
+        status:user.status,
+        date_of_birth: user.date_of_birth,
+        gender: user.date_of_birth,
+        national_id: user.national_id,
+        residential_address:user.residential_address,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+      },
+    });
   } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: "Login failed" });
+    console.error("Error during login:", error.message);
+
+    // Log failed login attempt
     await logAudit(null, "Login", "Failed", error.message);
+
+    // Respond with error
+    return res.status(500).json({ message: "Login failed", error: error.message });
   }
 });
+
+
 
 // Add Dependant (POST)
 router.post('/create/customers/:customerId/dependants', verifyToken, async (req, res) => {
