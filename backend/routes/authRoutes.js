@@ -120,7 +120,8 @@ router.post('/create/customer', verifyToken, async (req, res) => {
 // edit customers 
 router.put('/customers/:id', verifyToken, async (req, res) => {
     const { first_name, other_names, national_id, date_of_birth, gender, contact_number, email, residential_address, occupation, status } = req.body;
-    const { id  } = req.params;// Get the customer ID from the URL parameter
+    // Get the customer ID from the URL parameter
+    const { id  } = req.params;
 
     const customer_id = id
     // Ensure that all required fields are provided
@@ -155,9 +156,12 @@ router.put('/customers/:id', verifyToken, async (req, res) => {
 
 // Get customers with pagination
 router.get('/pagination', verifyToken, async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Current page number
-  const limit = 10; // Number of tasks per page
-  const offset = (page - 1) * limit; // Starting point for the current page
+  // Current page number
+  const page = parseInt(req.query.page) || 1; 
+  // Number of tasks per page
+  const limit = 10; 
+  // Starting point for the current page
+  const offset = (page - 1) * limit; 
 
   try {
     const db = await connectToDatabase();
