@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OTPViewController" customModule="Bank" customModuleProvider="target">
             <connections>
+                <outlet property="txtOtpCode" destination="PUp-eI-mLH" id="8r3-we-Kpz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
