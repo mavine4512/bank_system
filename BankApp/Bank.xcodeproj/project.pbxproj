@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1BE9E6582D0DAA1000A795C6 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE9E6572D0DAA1000A795C6 /* SwiftyJSON */; };
+		1BE9E6F52D10152200A795C6 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE9E6F42D10152200A795C6 /* IQKeyboardManagerSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BE9E6582D0DAA1000A795C6 /* SwiftyJSON in Frameworks */,
+				1BE9E6F52D10152200A795C6 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = Bank;
 			packageProductDependencies = (
 				1BE9E6572D0DAA1000A795C6 /* SwiftyJSON */,
+				1BE9E6F42D10152200A795C6 /* IQKeyboardManagerSwift */,
 			);
 			productName = Bank;
 			productReference = 1BE9E5F32D0D9D8200A795C6 /* Bank.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1BE9E6562D0DAA1000A795C6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				1BE9E6F32D10152200A795C6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1BE9E5F42D0D9D8200A795C6 /* Products */;
@@ -590,6 +594,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		1BE9E6F32D10152200A795C6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -597,6 +609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1BE9E6562D0DAA1000A795C6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		1BE9E6F42D10152200A795C6 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BE9E6F32D10152200A795C6 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

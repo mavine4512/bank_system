@@ -11,6 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegistrationVC" customModule="Bank" customModuleProvider="target">
             <connections>
+                <outlet property="txtBankAccount" destination="3Iu-zw-dwl" id="ZIt-OA-yYB"/>
+                <outlet property="txtFirstName" destination="Gm4-ad-sWf" id="5Bt-Kd-Zm1"/>
+                <outlet property="txtMobileNumber" destination="RN1-1R-3cj" id="oqD-CU-8CV"/>
+                <outlet property="txtNationalId" destination="mF4-Gq-UVp" id="Yuy-jE-DnX"/>
+                <outlet property="txtOtherName" destination="zdL-L9-fe1" id="9rL-tc-gk1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
