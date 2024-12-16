@@ -1,6 +1,6 @@
 # Banking System
 
-This project is a Banking System built using a combination of Node.js for the backend, React.js for the Admin and SWIFT. The system enables the management of customers, dependents, and OTP-based security features. It includes APIs for creating, updating, and managing customer data as well as interactive frontend interfaces for user interaction.
+This project is a Banking System built using a combination of Node.js for the backend, React.js for the Admin and SWIFT for iOS app. The system enables the management of customers, dependents, and OTP-based security features. It includes APIs for creating, updating, and managing customer data as well as interactive frontend interfaces for user interaction.
 
 ## Features
 
@@ -8,7 +8,7 @@ This project is a Banking System built using a combination of Node.js for the ba
 
 # Customer Management:
 
- * Create, update, and deactivate customer records.
+ * Create, update, and Edit customer records.
 
  * Manage customer dependents.
 
@@ -139,17 +139,32 @@ The frontend will be accessible at http://localhost:3001.
 
 # How to Use
 
-1. Run both backend and frontend servers.
+1. Run both backend, frontend servers and IOS.
 
-2. Sign up then Login to the system (to get auth token).
+2. Sign up on IOS to the system (to get auth token).
 
-3. Use the customer list to view, edit, or deactivate customers.
+3. Use the customer list to view, edit, deactivate or view beneficiary.
 
-4. Add new customers using the Add Customer button.
+4. Add new customers by registaring them on IOS or add on admin panel.
 
-5. Generate OTPs for customer to allow him to varify then login for secure operations.
+5. upon registration user will get OTP that will then be verified and access the dashboard
 
-6. Manage customer dependents as required.
+6. USer can do transactions and also can see balances on iOS 
+
+7. Manage customer dependents as required.
+
+# all endpoints:
+```bash
+admin/login
+admin/register
+customer/register
+customer/login
+customer/transaction
+customer/update/balance
+customer/validateOTP
+customer/generateOTP
+list/customers
+```
 
 # Future Enhancements
 
