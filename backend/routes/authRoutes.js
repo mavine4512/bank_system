@@ -727,7 +727,7 @@ router.post('/transaction', verifyToken, async (req, res) => {
 //   "account_id": 13,
 //   "amount": 500.00
 // }
-router.post('/accounts/deposit', async (req, res) => {
+router.post('/accounts/deposit', verifyToken, async (req, res) => {
     const { customer_id, account_id, amount } = req.body;
 
     // Validate input
