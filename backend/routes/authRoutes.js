@@ -602,7 +602,7 @@ router.post('/create/customers/:customerId/dependants', verifyToken, async (req,
 //   "amount": 100.00
 // }
 
-router.post('/transaction',  async (req, res) => {
+router.post('/transaction', verifyToken, async (req, res) => {
     const { customer_id, account_id, transaction_type, amount } = req.body;
     console.log('customer_id',customer_id)
 
@@ -727,7 +727,7 @@ router.post('/transaction',  async (req, res) => {
 //   "account_id": 13,
 //   "amount": 500.00
 // }
-router.post('/accounts/deposit', async (req, res) => {
+router.post('/accounts/deposit', verifyToken, async (req, res) => {
     const { customer_id, account_id, amount } = req.body;
 
     // Validate input
