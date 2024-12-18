@@ -602,7 +602,7 @@ router.post('/create/customers/:customerId/dependants', verifyToken, async (req,
 //   "amount": 100.00
 // }
 
-router.post('/transaction',  async (req, res) => {
+router.post('/transaction', verifyToken, async (req, res) => {
     const { customer_id, account_id, transaction_type, amount } = req.body;
     console.log('customer_id',customer_id)
 
